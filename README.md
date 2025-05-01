@@ -56,13 +56,43 @@ cd gradcon-anomaly
 conda install pytorch torchvision -c pytorch
 pip install -r requirments.txt
 ```
+If using a MAC M chips with ARM-Based Processor
+
+1. Right click terminal application → Get Info → Check “Open using Rosetta”
+2. Close all terminal windows
+3. Reopen the terminal application
+4. Download the x86_64 [Miniconda installer from](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+```
+bash Miniconda3-latest-MacOSX-x86_64.sh
+  - install into a seperate path file from main 'minimiconda': /Users/myname/miniconda3_x86
+/Users/myname/miniconda3_x86/bin/conda init
+conda info
+  - you should see 'platform : osx-64'
+conda create -n gradcon python=3.6
+conda activate gradcon
+cd gradcon-anomaly
+conda install pytorch torchvision -c pytorch
+pip install -r requirments.txt
+```
 
 ### Prepare datasets
-Run prep_dataset.py to download datasets and create train/val/test splits as follows:
-```
-python prep_datasets.py --dataset 'cifar-10' --save_dir ./datasets
-``` 
+Works with: CIFAR-10; FMNIST; MNIST; CURE_TSR; Maldeb
 
+CURE-TSR:
+* To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR).
+* Place the downloaded dataset within the 'datasets' directory
+
+Maldeb:
+* To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset) <br>
+* Place the downloaded dataset within the 'datasets' directory
+* Make sure it has the following file structure folderwise:
+```
+Maldeb
+├── Benign
+└── Malicious
+```
+
+Run prep_dataset.py to download datasets and create train/val/test splits as follows:
 ```
 usage: prep_datasets.py [-h] [--dataset DATASET] [--save_dir SAVE_DIR]
 
@@ -73,10 +103,10 @@ optional arguments:
   --dataset DATASET    Dataset to be downloaded (e.g. cifar-10, mnist, fmnist)
   --save_dir SAVE_DIR  Path to save the data
 ```
-To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR). <br>
-To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset)
 
-Run following commands:
+```
+python prep_datasets.py --dataset 'maldeb' --save_dir ./datasets
+``` 
 ### Training
 ```
 python train.py --dataset 'cifar-10' --dataset_dir './datasets' --save_dir './save'  --save_name 'GradConCAE'
