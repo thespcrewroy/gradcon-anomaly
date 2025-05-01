@@ -151,7 +151,7 @@ tensorboard --logdir=./save/maldeb/GradConCAE_test/logs --port=6006
 See the visualizations on a production ready model:
 ```
 tensorboard --logdir=./save/maldeb/GradConCAE/logs --port=6006
-``
+```
 
 ### Evaluation
 ```
@@ -185,7 +185,7 @@ python eval.py --dataset maldeb --dataset_dir ./datasets --ckpt_dir ./save --ckp
 
 Run eval.py to evaluate the decoder on the eval classes to test a production ready model:
 ```
-python eval.py --dataset 'cifar-10' --dataset_dir './datasets'  --ckpt_dir './save' --ckpt_name 'GradConCAE' --output_dir './results'
+python eval.py --dataset 'maldeb' --dataset_dir './datasets'  --ckpt_dir './save' --ckpt_name 'GradConCAE' --output_dir './results'
 ```
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#questions)
 ## Questions?
