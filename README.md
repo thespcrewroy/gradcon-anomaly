@@ -56,6 +56,24 @@ cd gradcon-anomaly
 conda install pytorch torchvision -c pytorch
 pip install -r requirments.txt
 ```
+If using a MAC M chips with ARM-Based Processor
+
+1. Right click terminal application → Get Info → Check “Open using Rosetta”
+2. Close all terminal windows
+3. Reopen the terminal application
+4. Download the x86_64 [Miniconda installer from](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+```
+bash Miniconda3-latest-MacOSX-x86_64.sh
+  - install into a seperate path file from main 'minimiconda': /Users/myname/miniconda3_x86
+/Users/myname/miniconda3_x86/bin/conda init
+conda info
+  - you should see 'platform : osx-64'
+conda create -n gradcon python=3.6
+conda activate gradcon
+cd gradcon-anomaly
+conda install pytorch torchvision -c pytorch
+pip install -r requirments.txt
+```
 
 ### Prepare datasets
 Run prep_dataset.py to download datasets and create train/val/test splits as follows:
