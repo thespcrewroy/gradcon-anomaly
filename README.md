@@ -109,7 +109,7 @@ python prep_datasets.py --dataset maldeb --save_dir ./datasets --benign_cap 300 
 ```
 Run prep_dataset.py to download datasets and create train/val/test splits for a production ready model as follows:
 ```
-python prep_datasets_orig --dataset 'maldeb' --save_dir ./datasets
+python prep_datasets_orig.py --dataset 'maldeb' --save_dir ./datasets
 ```
 ### Training
 ```
