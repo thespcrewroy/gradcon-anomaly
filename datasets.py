@@ -6,7 +6,7 @@ import torch.utils.data as data
 
 
 class AnomalyDataset(data.Dataset):
-    def __init__(self, root, split='train', in_channel=3, transform=None, target_transform=None, cls=None):
+    def __init__(self, root, split='train', in_channel=3, transform=None, target_transform=None, inlier_class=None):
         """
         Args:
             root (str): Directory that contains splited datasets
@@ -21,7 +21,7 @@ class AnomalyDataset(data.Dataset):
         self.target_transform = target_transform
         self.split = split  # training set or test set
         self.in_channel = in_channel
-        self.cls = cls
+        self.inlier_class = inlier_class
         self.label_img_data = []
 
         with open(os.path.join(self.root, 'data_split_%s.pkl' % split), 'rb') as pkl:
@@ -32,7 +32,7 @@ class AnomalyDataset(data.Dataset):
         else:
             # Load inlier class samples
             for x in split_data:
-                if x[0] == self.cls:
+                if x[0] == self.inlier_class:
                     self.label_img_data.append(x)
 
     def __getitem__(self, index):

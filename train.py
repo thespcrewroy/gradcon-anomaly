@@ -17,7 +17,7 @@ import ae_grad_reg
 
 
 parser = argparse.ArgumentParser(description='Training GradCon')
-parser.add_argument('-e', '--epochs', default=1000, type=int, metavar='N',
+parser.add_argument('-e', '--epochs', default=5, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
@@ -50,7 +50,7 @@ def main():
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    for in_cls in range(0, 10):
+    for in_cls in [0]:
         print('Training with inlier class: %d' % in_cls)
 
         save_dir = os.path.join(args.save_dir, dataset, args.save_name + '_inlier-%d' % in_cls)
@@ -96,14 +96,14 @@ def main():
             datasets.AnomalyDataset(dataset_dir, split='train', in_channel=in_channel,
                                  transform=transforms.ToTensor(),
                                  target_transform=transforms.ToTensor(),
-                                 cls=in_cls),
+                                 inlier_class=in_cls),
             batch_size=batch_size, shuffle=True)
 
         in_val_loader = torch.utils.data.DataLoader(
             datasets.AnomalyDataset(dataset_dir, split='val', in_channel=in_channel,
                                  transform=transforms.ToTensor(),
                                  target_transform=transforms.ToTensor(),
-                                 cls=in_cls),
+                                 inlier_class=in_cls),
             batch_size=batch_size, shuffle=True)
 
         # Start training
