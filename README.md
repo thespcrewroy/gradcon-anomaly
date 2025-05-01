@@ -36,8 +36,8 @@
 ## Table of Contents
 
 - [Getting Started](#getting-started)
-  - [Set Up The Environment](#set-up-the-environment)
-  - [Editing an Existing Challenge](#prepare-datasets)
+  - [Setting Up The Environment](#set-up-the-environment)
+  - [Prepare Datasets](#prepare-datasets)
   - [Training](#training)
   - [Evaluation](#evaluation)
 - [Questions](#questions)
