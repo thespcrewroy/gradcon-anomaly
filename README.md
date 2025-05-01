@@ -45,7 +45,7 @@
 </details>
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#getting-started)
-## Getting Started (Not Finished)
+## Getting Started
 
 ### Set up the environment
 Clone this repository and run following commands to create a conda environment and install all dependencies.
@@ -76,6 +76,17 @@ pip install -r requirments.txt
 ```
 
 ### Prepare datasets
+```
+usage: prep_datasets.py [-h] [--dataset DATASET] [--save_dir SAVE_DIR]
+
+Download datasets and create splits
+
+optional arguments:
+  -h, --help           show this help message and exit
+  --dataset DATASET    Dataset to be downloaded (e.g. cifar-10, mnist, fmnist)
+  --save_dir SAVE_DIR  Path to save the data
+```
+
 Works with: CIFAR-10; FMNIST; MNIST; CURE_TSR; Maldeb
 
 CURE-TSR:
@@ -94,22 +105,39 @@ Maldeb
 
 Run prep_dataset.py to download datasets and create train/val/test splits as follows:
 ```
-usage: prep_datasets.py [-h] [--dataset DATASET] [--save_dir SAVE_DIR]
-
-Download datasets and create splits
-
-optional arguments:
-  -h, --help           show this help message and exit
-  --dataset DATASET    Dataset to be downloaded (e.g. cifar-10, mnist, fmnist)
-  --save_dir SAVE_DIR  Path to save the data
-```
-
-```
 python prep_datasets.py --dataset 'maldeb' --save_dir ./datasets
 ``` 
 ### Training
 ```
-python train.py --dataset 'cifar-10' --dataset_dir './datasets' --save_dir './save'  --save_name 'GradConCAE'
+usage: train.py [-h] [-e N] [--start-epoch N] [-pf N] [-wf N] [-r PATH]
+                [--dataset DATASET] [--dataset_dir DIR] [--save_dir DIR]
+                [--save_name NAME] [-gw WEIGHT]
+
+Training GradCon
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -e N, --epochs N      number of total epochs to run (default: 5)
+  --start-epoch N       manual epoch number (useful on restarts)
+  -pf N, --print-freq N print frequency (default: 10)
+  -wf N, --write-freq N write frequency (default: 5)
+  -r PATH, --resume PATH
+                        Resume training from a checkpoint
+  --dataset DATASET     Dataset to be used for training (e.g. cifar-10, mnist, fmnist, maldeb)
+  --dataset_dir DIR     Path to the dataset (default: ./datasets)
+  --save_dir DIR        Path to save the model and logs (default: ./save)
+  --save_name NAME      Save name for the run (default: GradConCAE)
+  -gw WEIGHT, --grad-loss-weight WEIGHT
+                        Gradient loss weight (default: 0.03)
+```
+
+Run train.py to train the autoencoder on the inliner classes to obtain a barebones model for debugging:
+```
+python train.py --dataset maldeb --dataset_dir ./datasets --save_dir ./save --save_name GradConCAE_test --epochs 2 --print-freq 1 --write-freq 1
+```
+Run train.py to train the autoencoder on the inliner classes to obtain a production ready model:
+```
+python train.py --dataset 'maldeb' --dataset_dir './datasets' --save_dir './save' --save_name 'GradConCAE' --epochs 30 --grad-loss-weight 0.05 --write-freq 2
 ``` 
 
 ### Evaluation
