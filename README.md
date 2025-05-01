@@ -76,10 +76,11 @@ pip install -r requirments.txt
 ```
 
 ### Prepare datasets
-Run prep_dataset.py to download datasets and create train/val/test splits as follows:
-```
-python prep_datasets.py --dataset 'cifar-10' --save_dir ./datasets
-``` 
+Works with: CIFAR-10; FMNIST; MNIST; CURE_TSR
+
+Following datasets must be downloaded seperately: <br>
+* To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR). <br>
+* To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset)
 
 ```
 usage: prep_datasets.py [-h] [--dataset DATASET] [--save_dir SAVE_DIR]
@@ -91,8 +92,11 @@ optional arguments:
   --dataset DATASET    Dataset to be downloaded (e.g. cifar-10, mnist, fmnist)
   --save_dir SAVE_DIR  Path to save the data
 ```
-To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR). <br>
-To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset)
+
+Run prep_dataset.py to download datasets and create train/val/test splits as follows:
+```
+python prep_datasets.py --dataset 'maldeb' --save_dir ./datasets
+``` 
 
 Run following commands:
 ### Training
