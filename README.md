@@ -1,4 +1,18 @@
-# Backpropagated Gradient Representations for Anomaly Detection
+<p align="center">
+<img src="https://github.com/thespcrewroy/gradcon-anomaly/blob/master/figs/banner.jpg" alt="Logo" width="500" height="350" />
+<h1 align="center">CSCI 4900 Final Project: Backpropagated Gradient Representations for Anomaly Detection Implementation</h1>
+<p align="center">
+<a href="https://github.com/thespcrewroy/gradcon-anomaly/tool"><img alt="Tool" src="https://img.shields.io/badge/Python-v3.6.0-turquoise.svg" height="20"/></a>
+<a href="https://github.com/thespcrewroy/gradcon-anomaly/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/thespcrewroy/gradcon-anomaly.svg" height="20"/></a>
+<a href="https://github.com/thespcrewroy/gradcon-anomaly/pulls"><img alt="Pull Requests" src="https://img.shields.io/github/issues-pr/thespcrewroy/gradcon-anomaly?color=1039ac"/></a>
+<a href="https://github.com/thespcrewroy/gradcon-anomaly/graphs/issues"><img alt="Issues" src="https://img.shields.io/github/issues/thespcrewroy/gradcon-anomaly.svg" height="20"/></a>
+<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="License: CC BY-NC-ND 4.0" src="https://img.shields.io/badge/Attributions-OLIVES @ Georgia Tech-lightgrey.svg" height="20"/></a>
+
+<p align="center">
+<a href="https://github.com/thespcrewroy/gradcon-anomaly/graphs/forks"><img alt="Forks" src="https://img.shields.io/github/forks/thespcrewroy/gradcon-anomaly.svg" height="20"/></a>
+<a href="https://github.com/thespcrewroy/gradcon-anomaly/graphs/stars"><img alt="Stars" src="https://img.shields.io/github/stars/thespcrewroy/gradcon-anomaly.svg" height="20"/></a>
+
+</p>
 
 This work was conducted in the [OLIVES @ Georgia Institute of Technology](http://www.ghassanalregib.info)
 
