@@ -14,17 +14,37 @@
 
 </p>
 
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#questions)
-
-## Abstract
-
-Learning representations that clearly distinguish between normal and abnormal data is key to the success of anomaly detection. Most of existing anomaly detection algorithms use activation representations from forward propagation while not exploiting gradients from backpropagation to characterize data. Gradients capture model updates required to represent data. Anomalies require more drastic updates to models to fully represent them compared to normal data. Hence, we propose the utilization of backpropagated gradients as representations to characterize model behavior on anomalies and, consequently, detect such anomalies. We show that the proposed method using gradient-based representations achieves state-of-the-art anomaly detection performance in benchmarking image recognition datasets. Also, we highlight the computational efficiency and the simplicity of the proposed method by comparing with other state-of-the-art methods relying on adversarial networks or autoregressive models, which require at least 27 times more model parameters than the proposed method. 
-
 <p align="center">
-<img src="./figs/abstract.jpg", width="600">
+  <b>Abstract</b></br>
+  <sub>Learning representations that clearly distinguish between normal and abnormal data is key to the success of anomaly detection. Most of existing anomaly detection algorithms use activation representations from forward propagation while not exploiting gradients from backpropagation to characterize data. Gradients capture model updates required to represent data. Anomalies require more drastic updates to models to fully represent them compared to normal data. Hence, we propose the utilization of backpropagated gradients as representations to characterize model behavior on anomalies and, consequently, detect such anomalies. We show that the proposed method using gradient-based representations achieves state-of-the-art anomaly detection performance in benchmarking image recognition datasets. Also, we highlight the computational efficiency and the simplicity of the proposed method by comparing with other state-of-the-art methods relying on adversarial networks or autoregressive models, which require at least 27 times more model parameters than the proposed method. <sub>
 </p>
 
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#questions)
+<br />
+
+<p align="center">
+  <img src="./figs/abstract.jpg", alt="Demo" width="800"">
+</p>
+
+- **[Adjective]**: [Description]
+- **[Adjective]**: [Description]
+- **[Adjective]**: [Description]
+
+<details>
+<summary>📖 Table of Contents</summary>
+<br />
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+  - [Set Up The Environment](#set-up-the-environment)
+  - [Editing an Existing Challenge](#prepare-datasets)
+  - [Training](#training)
+  - [Evaluation](#evaluation)
+- [Questions](#questions)
+- [Thanks to all our Contributors!](#thanks-to-all-our-contributors)
+</details>
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#getting-started)
 ## Getting Started (Not Finished)
 
 ### Set up the environment
