@@ -73,10 +73,9 @@ If you have any questions, regarding the dataset or the code, you can contact th
 
 <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="License: CC BY-NC-ND 4.0" src="https://img.shields.io/badge/Attributions-OLIVES @ Georgia Tech-lightgrey.svg" height="20"/></a>
 
-This work was conducted in the [OLIVES @ Georgia Institute of Technology](http://www.ghassanalregib.info)
+This work was conducted in the [OLIVES @ Georgia Institute of Technology](http://www.ghassanalregib.info) under researchers [Gukyeong Kwon](https://https://gukyeongkwon.github.io/), [Mohit Prabhushankar](https://www.linkedin.com/in/mohitps/), [Dogancan Temel](http://cantemel.com/), and [Ghassan AlRegib](http://www.ghassanalregib.info)
 
-This is an official code repository for the paper: <br>
-[Gukyeong Kwon](https://https://gukyeongkwon.github.io/), [Mohit Prabhushankar](https://www.linkedin.com/in/mohitps/), [Dogancan Temel](http://cantemel.com/), and [Ghassan AlRegib](http://www.ghassanalregib.info), "Backpropagated Gradient Representations for Anomaly Detection," In Proceedings of the European Conference on Computer Vision (ECCV), 2020.
+This is an official code repository for the paper: ***"Backpropagated Gradient Representations for Anomaly Detection,"*** **In Proceedings of the European Conference on Computer Vision (ECCV), 2020.**
 
 <p align="right"><a href="#top">🔼 Back to top</a></p>
 </small>
