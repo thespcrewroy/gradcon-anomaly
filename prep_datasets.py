@@ -52,9 +52,10 @@ def main():
         val_ratio = 0.15 # Ratio of validation data
         test_ratio = 0.15 # Ratio of test data
 
-        for split in ['train', 'val', 'test']: # Create directories for train, val, and test splits
-            os.makedirs(os.path.join(out_root, split, 'Benign'), exist_ok=True) # Create directory for benign data
-            os.makedirs(os.path.join(out_root, split, 'Malicious'), exist_ok=True) # Create directory for malicious data
+        for split in ['train', 'val', 'test']: # For each split (train, val, test)
+            os.makedirs(os.path.join(out_root, split, 'Benign'), exist_ok=True) # Create directory for Benign data
+            if split != 'train':  # Only create Malicious folders for val and test
+                os.makedirs(os.path.join(out_root, split, 'Malicious'), exist_ok=True) # Create directory for Malicious
 
         for cls in ['Benign', 'Malicious']: # For each class (Benign and Malicious)
             full_cls_dir = os.path.join(raw_root, cls) # Directory containing the original data
@@ -66,11 +67,13 @@ def main():
             val_files = files[int(n * train_ratio):int(n * (train_ratio + val_ratio))] # Validation files
             test_files = files[int(n * (train_ratio + val_ratio)):] # Test files
 
-            for f in train_files: # Copy training files to the output directory
-                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'train', cls, f)) # Copy file
-            for f in val_files: # Copy validation files to the output directory
+            if cls == 'Benign': # If the class is 'Benign'
+                for f in train_files: # Copy training files to the output directory
+                    shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'train', cls, f)) # Copy file
+            
+            for f in val_files: # Loop through validation files
                 shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'val', cls, f)) # Copy file
-            for f in test_files: # Copy test files to the output directory
+            for f in test_files: # Loop through test files
                 shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'test', cls, f)) # Copy file
 
         print("Maldeb dataset has been split into train/val/test under:", out_root) # Print the output directory
