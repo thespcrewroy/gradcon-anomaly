@@ -146,6 +146,36 @@ tensorboard --logdir=./save/maldeb/GradConCAE_test_benign/logs --port=6006
 
 ### Evaluation
 ```
+usage: eval.py [-h] [--print-freq N] [--dataset DATASET]
+               [--dataset_dir DATASET_DIR] [--ckpt_dir CKPT_DIR]
+               [--ckpt_name CKPT_NAME] [--output_dir OUTPUT_DIR]
+               [--grad-loss-weight N]
+
+Evaluation of GradCon (Fixed Inlier Class)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --print-freq N, -pf N
+                        print frequency (default: 10)
+  --dataset DATASET     Dataset to be used for training (e.g. cifar-10, mnist, fmnist)
+  --dataset_dir DATASET_DIR
+                        Path for the dataset
+  --ckpt_dir CKPT_DIR   Path to the folder that contains saved models
+  --ckpt_name CKPT_NAME
+                        Checkpoint name
+  --output_dir OUTPUT_DIR
+                        Path to save the result file
+  --grad-loss-weight N, -gw N
+                        gradient loss weight for the anomaly score
+```
+
+Run eval.py to evaluate the decoder on the eval classes to obtain a barebones model for debugging:
+```
+python eval.py --dataset maldeb --dataset_dir ./datasets --ckpt_dir ./save --ckpt_name GradConCAE_test --output_dir ./results
+```
+
+Run eval.py to evaluate the decoder on the eval classes:
+```
 python eval.py --dataset 'cifar-10' --dataset_dir './datasets'  --ckpt_dir './save' --ckpt_name 'GradConCAE' --output_dir './results'
 ```
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#questions)
