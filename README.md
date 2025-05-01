@@ -13,22 +13,6 @@
 <a href="https://github.com/thespcrewroy/gradcon-anomaly/graphs/stars"><img alt="Stars" src="https://img.shields.io/github/stars/thespcrewroy/gradcon-anomaly.svg" height="20"/></a>
 
 </p>
-
-This work was conducted in the [OLIVES @ Georgia Institute of Technology](http://www.ghassanalregib.info)
-
-This is an official code repository for the paper:
-
-[Gukyeong Kwon](https://https://gukyeongkwon.github.io/), [Mohit Prabhushankar](https://www.linkedin.com/in/mohitps/), [Dogancan Temel](http://cantemel.com/), and [Ghassan AlRegib](http://www.ghassanalregib.info), "Backpropagated Gradient Representations for Anomaly Detection," In Proceedings of the European Conference on Computer Vision (ECCV), 2020.
-
-If you find our codes useful, we kindly ask you to cite our work. 
-```tex
-@inproceedings{kwon2020backpropagated,
-  title={Backpropagated Gradient Representations for Anomaly Detection},
-  author={Kwon, Gukyeong and Prabhushankar, Mohit and Temel, Dogancan and AlRegib, Ghassan},
-  booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
-  year={2020}
-}
-```
 --------
 
 ## Abstract
@@ -85,3 +69,14 @@ python eval.py --dataset 'cifar-10' --dataset_dir './datasets'  --ckpt_dir './sa
 
 If you have any questions, regarding the dataset or the code, you can contact the authors (gukyeong.kwon@gatech.edu or mohit.p@gatech.edu), or even better open an issue in this repo and we'll do our best to help.
 
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/fire.png)](#publication-history)
+
+<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="License: CC BY-NC-ND 4.0" src="https://img.shields.io/badge/Attributions-OLIVES @ Georgia Tech-lightgrey.svg" height="20"/></a>
+
+This work was conducted in the [OLIVES @ Georgia Institute of Technology](http://www.ghassanalregib.info)
+
+This is an official code repository for the paper: <br>
+[Gukyeong Kwon](https://https://gukyeongkwon.github.io/), [Mohit Prabhushankar](https://www.linkedin.com/in/mohitps/), [Dogancan Temel](http://cantemel.com/), and [Ghassan AlRegib](http://www.ghassanalregib.info), "Backpropagated Gradient Representations for Anomaly Detection," In Proceedings of the European Conference on Computer Vision (ECCV), 2020.
+
+<p align="right"><a href="#top">🔼 Back to top</a></p>
+</small>
