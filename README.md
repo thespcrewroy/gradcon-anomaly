@@ -76,12 +76,23 @@ pip install -r requirments.txt
 ```
 
 ### Prepare datasets
-Works with: CIFAR-10; FMNIST; MNIST; CURE_TSR
+Works with: CIFAR-10; FMNIST; MNIST; CURE_TSR; Maldeb
 
-Following datasets must be downloaded seperately: <br>
-* To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR). <br>
-* To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset)
+CURE-TSR:
+* To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR).
+* Place the downloaded dataset within the 'datasets' directory
 
+Maldeb:
+* To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset) <br>
+* Place the downloaded dataset within the 'datasets' directory
+* Make sure it has the following file structure folderwise:
+```
+Maldeb
+├── Benign
+└── Malicious
+```
+
+Run prep_dataset.py to download datasets and create train/val/test splits as follows:
 ```
 usage: prep_datasets.py [-h] [--dataset DATASET] [--save_dir SAVE_DIR]
 
@@ -93,12 +104,9 @@ optional arguments:
   --save_dir SAVE_DIR  Path to save the data
 ```
 
-Run prep_dataset.py to download datasets and create train/val/test splits as follows:
 ```
 python prep_datasets.py --dataset 'maldeb' --save_dir ./datasets
 ``` 
-
-Run following commands:
 ### Training
 ```
 python train.py --dataset 'cifar-10' --dataset_dir './datasets' --save_dir './save'  --save_name 'GradConCAE'
