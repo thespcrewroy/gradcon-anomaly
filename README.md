@@ -139,10 +139,14 @@ Run train.py to train the autoencoder on the inliner classes to obtain a product
 ```
 python train.py --dataset 'maldeb' --dataset_dir './datasets' --save_dir './save' --save_name 'GradConCAE' --epochs 30 --grad-loss-weight 0.05 --write-freq 2
 ```
-See the visualizations:
+See the visualizations to debug:
 ```
-tensorboard --logdir=./save/maldeb/GradConCAE_test_benign/logs --port=6006
+tensorboard --logdir=./save/maldeb/GradConCAE_test/logs --port=6006
 ```
+See the visualizations on the fully trained model
+```
+tensorboard --logdir=./save/maldeb/GradConCAE/logs --port=6006
+``
 
 ### Evaluation
 ```
