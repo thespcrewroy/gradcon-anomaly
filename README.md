@@ -103,10 +103,14 @@ Maldeb
 └── Malicious
 ```
 
-Run prep_dataset.py to download datasets and create train/val/test splits as follows:
+Run prep_dataset.py to download datasets and create train/val/test splits on a lightweight model for debugging:
+```
+python prep_datasets.py --dataset maldeb --save_dir ./datasets --benign_cap 300 --malicious_cap 100
+```
+Run prep_dataset.py to download datasets and create train/val/test splits for a production ready model as follows:
 ```
 python prep_datasets.py --dataset 'maldeb' --save_dir ./datasets
-``` 
+```
 ### Training
 ```
 usage: train.py [-h] [-e N] [--start-epoch N] [-pf N] [-wf N] [-r PATH]
@@ -131,7 +135,7 @@ optional arguments:
                         Gradient loss weight (default: 0.03)
 ```
 
-Run train.py to train the autoencoder on the inliner classes to obtain a barebones model for debugging:
+Run train.py to train the autoencoder on the inliner classes to obtain a lightweight model for debugging:
 ```
 python train.py --dataset maldeb --dataset_dir ./datasets --save_dir ./save --save_name GradConCAE_test --epochs 2 --print-freq 1 --write-freq 1
 ```
@@ -139,11 +143,12 @@ Run train.py to train the autoencoder on the inliner classes to obtain a product
 ```
 python train.py --dataset 'maldeb' --dataset_dir './datasets' --save_dir './save' --save_name 'GradConCAE' --epochs 30 --grad-loss-weight 0.05 --write-freq 2
 ```
-See the visualizations to debug:
+
+See the visualizations on a lightweight model for debugging:
 ```
 tensorboard --logdir=./save/maldeb/GradConCAE_test/logs --port=6006
 ```
-See the visualizations on the fully trained model
+See the visualizations on a production ready model:
 ```
 tensorboard --logdir=./save/maldeb/GradConCAE/logs --port=6006
 ``
@@ -173,12 +178,12 @@ optional arguments:
                         gradient loss weight for the anomaly score
 ```
 
-Run eval.py to evaluate the decoder on the eval classes to obtain a barebones model for debugging:
+Run eval.py to evaluate the decoder on the eval classes to test a lightweight model for debugging:
 ```
 python eval.py --dataset maldeb --dataset_dir ./datasets --ckpt_dir ./save --ckpt_name GradConCAE_test --output_dir ./results
 ```
 
-Run eval.py to evaluate the decoder on the eval classes:
+Run eval.py to evaluate the decoder on the eval classes to test a production ready model:
 ```
 python eval.py --dataset 'cifar-10' --dataset_dir './datasets'  --ckpt_dir './save' --ckpt_name 'GradConCAE' --output_dir './results'
 ```
