@@ -13,7 +13,8 @@
 <a href="https://github.com/thespcrewroy/gradcon-anomaly/graphs/stars"><img alt="Stars" src="https://img.shields.io/github/stars/thespcrewroy/gradcon-anomaly.svg" height="20"/></a>
 
 </p>
---------
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#questions)
 
 ## Abstract
 
@@ -23,7 +24,8 @@ Learning representations that clearly distinguish between normal and abnormal da
 <img src="./figs/abstract.jpg", width="600">
 </p>
 
-## Getting Started
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#questions)
+## Getting Started (Not Finished)
 
 ### Set up the environment
 Clone this repository and run following commands to create a conda environment and install all dependencies.
@@ -51,9 +53,9 @@ optional arguments:
   --dataset DATASET    Dataset to be downloaded (e.g. cifar-10, mnist, fmnist)
   --save_dir SAVE_DIR  Path to save the data
 ```
-To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR). 
+To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR). <br>
+To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset)
 
-## Training and Evaluation of GradCon
 Run following commands:
 ### Training
 ```
@@ -64,18 +66,26 @@ python train.py --dataset 'cifar-10' --dataset_dir './datasets' --save_dir './sa
 ```
 python eval.py --dataset 'cifar-10' --dataset_dir './datasets'  --ckpt_dir './save' --ckpt_name 'GradConCAE' --output_dir './results'
 ```
-
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#questions)
 ## Questions?
 
-If you have any questions, regarding the dataset or the code, you can contact the authors (gukyeong.kwon@gatech.edu or mohit.p@gatech.edu), or even better open an issue in this repo and we'll do our best to help.
+If you have any questions, regarding the dataset or the code, contact the authors: (gukyeong.kwon@gatech.edu or mohit.p@gatech.edu). <br>
+Even better, open an issue in the [here](https://github.com/gukyeongkwon/gradcon-anomaly/issues) and the author's will do their best to help.
 
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/fire.png)](#publication-history)
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#contributors)
 
-<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="License: CC BY-NC-ND 4.0" src="https://img.shields.io/badge/Attributions-OLIVES @ Georgia Tech-lightgrey.svg" height="20"/></a>
+## Thanks to all our Contributors!
+
+<a href="https://github.com/thespcrewroy/gradcon-anomaly/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=thespcrewroy/gradcon-anomaly" />
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](#attributions)
+
+<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Attribution-NonCommercial-NoDerivatives 4.0 International" src="https://img.shields.io/badge/Attributions-OLIVES @ Georgia Tech-lightgrey.svg" height="20"/></a>
 
 This work was conducted in the [OLIVES @ Georgia Institute of Technology](http://www.ghassanalregib.info) under researchers [Gukyeong Kwon](https://https://gukyeongkwon.github.io/), [Mohit Prabhushankar](https://www.linkedin.com/in/mohitps/), [Dogancan Temel](http://cantemel.com/), and [Ghassan AlRegib](http://www.ghassanalregib.info)
 
-This is an official code repository for the paper: ***"Backpropagated Gradient Representations for Anomaly Detection,"*** **In Proceedings of the European Conference on Computer Vision (ECCV), 2020.**
+The official code repository for the paper: [***"Backpropagated Gradient Representations for Anomaly Detection,"*** **In Proceedings of the European Conference on Computer Vision (ECCV), 2020.**](https://github.com/gukyeongkwon/gradcon-anomaly)
 
 <p align="right"><a href="#top">🔼 Back to top</a></p>
 </small>
