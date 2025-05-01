@@ -11,13 +11,10 @@ import pickle # For saving and loading data
 from PIL import Image # For image processing
 
 
-parser = argparse.ArgumentParser(description='Download datasets and create splits')
-parser.add_argument('--dataset', default='', type=str, help='Dataset to be downloaded or preprocessed (e.g. cifar-10, mnist, fmnist, maldeb)')
-parser.add_argument('--save_dir', default='./datasets', type=str, help='Path to save the data')
-parser.add_argument('--outlier_ratio', default=50, type=int, help='Outlier ratio in the test set')
-parser.add_argument('--benign_cap', default=None, type=int, help='Maximum number of benign images to use (for maldeb only)')
-parser.add_argument('--malicious_cap', default=None, type=int, help='Maximum number of malicious images to use (for maldeb only)')
-
+parser = argparse.ArgumentParser(description='Download datasets and create splits') # Create an argument parser
+parser.add_argument('--dataset', default='', type=str, help='Dataset to be downloaded or preprocessed (e.g. cifar-10, mnist, fmnist, maldeb)') # Dataset name
+parser.add_argument('--save_dir', default='./datasets', type=str, help='Path to save the data') # Directory to save the dataset
+parser.add_argument('--outlier_ratio', default=50, type=int, help='Outlier ratio in the test set') # Ratio of outliers in the test set
 
 
 def main():
@@ -47,43 +44,40 @@ def main():
         trainset = datasets.FashionMNIST(dataset_dir, download=True, train=True) # Load the Fashion-MNIST training set
         testset = datasets.FashionMNIST(dataset_dir, download=True, train=False) # Load the Fashion-MNIST test set
 
-    elif args.dataset == 'maldeb':
-        raw_root = os.path.join(args.save_dir, 'Maldeb')
-        out_root = os.path.join(args.save_dir, 'maldeb')
+    elif args.dataset == 'maldeb': # If the dataset is 'maldeb'
+        raw_root = os.path.join(args.save_dir, 'Maldeb')  # where the original Benign/Malicious folders are
+        out_root = os.path.join(args.save_dir, 'maldeb')  # destination split folder
 
-        train_ratio = 0.7
-        val_ratio = 0.15
-        test_ratio = 0.15
+        train_ratio = 0.7 # Ratio of training data
+        val_ratio = 0.15 # Ratio of validation data
+        test_ratio = 0.15 # Ratio of test data
 
-        for split in ['train', 'val', 'test']:
-            os.makedirs(os.path.join(out_root, split, 'Benign'), exist_ok=True)
-            if split != 'train':
-                os.makedirs(os.path.join(out_root, split, 'Malicious'), exist_ok=True)
+        for split in ['train', 'val', 'test']: # For each split (train, val, test)
+            os.makedirs(os.path.join(out_root, split, 'Benign'), exist_ok=True) # Create directory for Benign data
+            if split != 'train':  # Only create Malicious folders for val and test
+                os.makedirs(os.path.join(out_root, split, 'Malicious'), exist_ok=True) # Create directory for Malicious
 
-        for cls in ['Benign', 'Malicious']:
-            full_cls_dir = os.path.join(raw_root, cls)
-            files = sorted([f for f in os.listdir(full_cls_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
-            random.shuffle(files)
-            n = len(files)
+        for cls in ['Benign', 'Malicious']: # For each class (Benign and Malicious)
+            full_cls_dir = os.path.join(raw_root, cls) # Directory containing the original data
+            files = sorted(os.listdir(full_cls_dir)) # List of files in the directory
+            random.shuffle(files) # Shuffle the files randomly
+            n = len(files) # Number of files
 
-            cap = args.benign_cap if cls == 'Benign' and args.benign_cap else args.malicious_cap if cls == 'Malicious' and args.malicious_cap else n
-            files = files[:min(cap, n)]
+            train_files = files[:int(n * train_ratio)] # Training files
+            val_files = files[int(n * train_ratio):int(n * (train_ratio + val_ratio))] # Validation files
+            test_files = files[int(n * (train_ratio + val_ratio)):] # Test files
 
-            train_files = files[:int(len(files) * train_ratio)]
-            val_files = files[int(len(files) * train_ratio):int(len(files) * (train_ratio + val_ratio))]
-            test_files = files[int(len(files) * (train_ratio + val_ratio)) :]
+            if cls == 'Benign': # If the class is 'Benign'
+                for f in train_files: # Copy training files to the output directory
+                    shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'train', cls, f)) # Copy file
+            
+            for f in val_files: # Loop through validation files
+                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'val', cls, f)) # Copy file
+            for f in test_files: # Loop through test files
+                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'test', cls, f)) # Copy file
 
-            if cls == 'Benign':
-                for f in train_files:
-                    shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'train', cls, f))
-
-            for f in val_files:
-                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'val', cls, f))
-            for f in test_files:
-                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'test', cls, f))
-
-        print("Maldeb dataset has been split into train/val/test under:", out_root)
-        return
+        print("Maldeb dataset has been split into train/val/test under:", out_root) # Print the output directory
+        return # Exit the program
     
     np_train = [] # List to store training data
     np_test = [] # List to store test data

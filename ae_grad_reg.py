@@ -67,6 +67,8 @@ def train(model, device, train_loader, optimizer, epoch, print_freq, grad_loss_w
                   'Grad Loss {grad_loss.val:.4f} ({grad_loss.avg:.4f})'
                   .format(epoch, batch_idx, len(train_loader), loss=losses, recon_loss=recon_losses,
                           grad_loss=grad_losses)) # Print the loss
+        
+    return losses.avg
 
 '''
 This function is used to test the model.

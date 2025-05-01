@@ -1,12 +1,16 @@
+'''Import Necessary Libraries'''
 import argparse
 import os
 import errno
+import time
 
 import numpy as np
-from sklearn.metrics import roc_curve, auc
 import torch
 import torch.utils.data
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc
+from thop import profile
 
 import models
 import ae_grad_reg
@@ -29,12 +33,105 @@ parser.add_argument('--grad-loss-weight', '-gw', default=0.12, type=float,
 def main():
     args = parser.parse_args()
 
-    if args.dataset not in ['cifar-10', 'mnist', 'fmnist']:
-        raise ValueError('Dataset should be one of the followings: cifar-10, mnist, fmnist')
+    if args.dataset not in ['cifar-10', 'mnist', 'fmnist', 'maldeb']:
+        raise ValueError('Dataset should be one of the followings: cifar-10, mnist, fmnist, maldeb')
 
     dataset = args.dataset
     grad_loss_weight = args.grad_loss_weight
-    trained_inlier_class = 0  # ✅ You only trained on this class
+    trained_inlier_class = 0
+    in_channel = 3 if dataset == 'cifar-10' else 1
+    num_decoder_layers = 4
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    if dataset == 'maldeb':
+        dataset_dir = os.path.join(args.dataset_dir, 'maldeb')
+        ae_ckpt = os.path.join(args.ckpt_dir, dataset, f'{args.ckpt_name}_benign/model_best.pth.tar')
+        ae = models.GradConCAE(in_channel=in_channel)
+        ae = torch.nn.DataParallel(ae).to(device)
+        ae.eval()
+
+        if os.path.isfile(ae_ckpt):
+            print(f"=> loading checkpoint '{ae_ckpt}'")
+            checkpoint_ae = torch.load(ae_ckpt)
+            ae.load_state_dict(checkpoint_ae['state_dict'])
+            ref_grad = checkpoint_ae['ref_grad']
+            print(f"=> loaded checkpoint '{ae_ckpt}' (epoch {checkpoint_ae['epoch']}, best_loss {checkpoint_ae['best_loss']})")
+        else:
+            print(f"=> no checkpoint found at '{ae_ckpt}'")
+            return
+
+        test_loader = torch.utils.data.DataLoader(
+            datasets.MaldebDataset(dataset_dir, split='test',
+                                   transform=transforms.Compose([
+                                       transforms.Resize((252, 252)),
+                                       transforms.ToTensor()])),
+            batch_size=1, shuffle=False)
+
+        # --- Measure MACs and Parameters ---
+        dummy_input = torch.randn(1, in_channel, 252, 252).to(device)
+        macs, params = profile(ae.module, inputs=(dummy_input,))
+        print(f"\nModel Complexity:")
+        print(f"Params: {params:,} ({params/1e6:.2f}M)")
+        print(f"MACs: {macs:,} ({macs/1e6:.2f}M)")
+
+        # --- Inference and scoring ---
+        total_start = time.time()
+        preprocess_time = 0
+        inference_time = 0
+        postprocess_time = 0
+
+        all_labels = []
+        all_scores = []
+
+        with torch.no_grad():
+            for images, targets, labels in test_loader:
+                t0 = time.time()
+                images, targets, labels = images.to(device), targets.to(device), labels.to(device)
+                t1 = time.time()
+                outputs = ae(images)
+                t2 = time.time()
+                recon_error = ((outputs - targets) ** 2).view(outputs.size(0), -1).mean(dim=1)
+                t3 = time.time()
+
+                all_labels.extend(labels.cpu().numpy())
+                all_scores.extend(recon_error.cpu().numpy())
+
+                preprocess_time += (t1 - t0)
+                inference_time += (t2 - t1)
+                postprocess_time += (t3 - t2)
+
+        total_time = time.time() - total_start
+
+        total_start = time.time()
+        all_labels = []
+        all_scores = []
+
+        result = ae_grad_reg.gradcon_score(
+            ae, in_cls=1, grad_loss_weight=grad_loss_weight,
+            ref_grad=ref_grad, nlayer=num_decoder_layers,
+            device=device, test_loader=test_loader
+        )
+
+        total_time = time.time() - total_start
+        labels = result[:, 0]
+        scores = result[:, 1]
+        fpr, tpr, _ = roc_curve(labels, scores, pos_label=1)
+        score_auc = auc(fpr, tpr)
+
+        os.makedirs(args.output_dir, exist_ok=True)
+        metrics_output_path = os.path.join(args.output_dir, f"{args.dataset}_{args.ckpt_name}_metrics.txt")
+        with open(metrics_output_path, "w") as f:
+            f.write(f"AUROC: {score_auc:.4f}\n")
+            f.write(f"MACs: {macs/1e6:.2f}M\n")
+            f.write(f"Parameters: {params/1e6:.2f}M\n")
+            f.write(f"Preprocessing time: {preprocess_time:.6f}s\n")
+            f.write(f"Inference time: {inference_time:.6f}s\n")
+            f.write(f"Postprocessing time: {postprocess_time:.6f}s\n")
+            f.write(f"Total inference time: {total_time:.6f}s\n")
+
+        print(f"\nMaldeb AUROC: {score_auc:.4f}")
+        print(f"Total Inference Time: {total_time:.4f} sec")
+        return
 
     dataset_dir = os.path.join(args.dataset_dir, dataset, 'splits')
     in_channel = 3 if dataset == 'cifar-10' else 1
