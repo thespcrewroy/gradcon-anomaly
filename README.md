@@ -54,7 +54,7 @@ conda create -n gradcon python=3.6
 conda activate gradcon
 cd gradcon-anomaly
 conda install pytorch torchvision -c pytorch
-pip install -r requirments.txt
+pip install -r requirements.txt
 ```
 If using a MAC M chips with ARM-Based Processor
 
