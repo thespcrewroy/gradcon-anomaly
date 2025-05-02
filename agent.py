@@ -2,67 +2,48 @@ import torch
 from crewai import Agent, Task, Crew
 from PIL import Image
 import torchvision.transforms as transforms
-from torch.utils.data import Dataset, DataLoader
-from pathlib import Path
+import os
 
-from models import GradConCAE
-from ae_grad_reg import gradcon_score
+from models import GradConCAE  # Correctly import your model
 
-# ----------- Setup ----------
+# ----------- Load model correctly ----------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Define relative paths
-root_dir = Path(__file__).parent.resolve()
-ckpt_path = root_dir / 'save' / 'maldeb' / 'GradConCAE_test' / 'model_best.pth.tar'
-image_path = root_dir / 'datasets' / 'Maldeb' / 'val' / 'Malicious' / '0b27fbcb91a355c14ee1367af92b962f1901e4d48a08e719f6e4dada1d599130_L.png'
+# Set parameters manually here since args is undefined
+ckpt_path = './save/maldeb/GradConCAE/model_best.pth.tar'
+in_channel = 1  # 'maldeb' is grayscale
+input_size = (252, 252)  # Match training input
 
 # Load model
-model = GradConCAE(in_channel=1)  # grayscale
+model = GradConCAE(in_channel=in_channel)
 model = torch.nn.DataParallel(model).to(device)
-checkpoint = torch.load(ckpt_path, map_location=device)
+
+# Load checkpoint
+checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
 model.load_state_dict(checkpoint['state_dict'])
-ref_grad = checkpoint.get('ref_grad', None)
+ref_grad = checkpoint.get('ref_grad', None)  # Only needed if you want GradCon scoring
 model.eval()
 
-# ----------- Image Transform ----------
+# ----------- Image transform ----------
 transform = transforms.Compose([
-    transforms.Resize((252, 252)),
+    transforms.Resize(input_size),
     transforms.ToTensor(),
 ])
 
-# ----------- Single-image Dataset ----------
-class SingleImageDataset(Dataset):
-    def __init__(self, image_tensor, label=1):
-        self.image = image_tensor
-        self.label = label
-
-    def __len__(self):
-        return 1
-
-    def __getitem__(self, idx):
-        return self.image, self.image, torch.tensor(self.label)
-
-# ----------- GradCon Prediction ----------
+# ----------- Image prediction function ----------
 def predict_image(image_path):
-    image = Image.open(image_path).convert("L")
-    image_tensor = transform(image).unsqueeze(0).to(device)
-    loader = DataLoader(SingleImageDataset(image_tensor), batch_size=1)
+    image = Image.open(image_path).convert("L")  # "L" for grayscale
+    image = transform(image).unsqueeze(0).to(device)
 
-    result = gradcon_score(
-        model,
-        in_cls=1,
-        grad_loss_weight=0.05,
-        ref_grad=ref_grad,
-        nlayer=4,
-        device=device,
-        test_loader=loader
-    )
+    with torch.no_grad():
+        output = model(image)
+        recon_error = ((output - image) ** 2).view(output.size(0), -1).mean(dim=1).item()
 
-    score = result[0, 1]
-    threshold = 0.15  # empirical threshold
-    return "Benign" if score < threshold else "Malicious"
+    # Using a placeholder threshold; ideally you'd determine this via validation
+    threshold = 0.25 
+    return "Benign" if recon_error < threshold else "Malicious"
 
-# ----------- CrewAI Setup ----------
+# ----------- Define a CrewAI Task ----------
 task = Task(
     description="Classify a given image as malicious or benign using a trained deep learning model.",
     expected_output="A classification result: either 'Malicious' or 'Benign'.",
@@ -71,6 +52,7 @@ task = Task(
     agent=None
 )
 
+# ----------- Define the Agent ----------
 agent = Agent(
     role="Image Security Analyst",
     goal="Detect malicious content in images.",
@@ -79,9 +61,21 @@ agent = Agent(
 )
 
 task.agent = agent
-crew = Crew(agents=[agent], tasks=[task], verbose=True)
 
-# ----------- Run ----------
+# ----------- Create a Crew ----------
+crew = Crew(
+    agents=[agent],
+    tasks=[task],
+    verbose=True
+)
+
+# ----------- Run the Prediction ----------
+image_path = './datasets/Maldeb/val/Malicious/0b27fbcb91a355c14ee1367af92b962f1901e4d48a08e719f6e4dada1d599130_L.png'
 result = predict_image(image_path)
+
+# Inject the prediction result into the task description
 task.description += f"\n\nThe image reconstruction error indicates this image is: **{result}**."
+
+# Kick off CrewAI to generate a response with that context
 crew.kickoff()
+
