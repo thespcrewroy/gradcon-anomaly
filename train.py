@@ -57,7 +57,7 @@ def main():
     if dataset == 'maldeb': # if dataset is Maldeb
         print("Training with Maldeb dataset (Benign only)") # print message
         dataset_dir = os.path.join(args.dataset_dir, 'maldeb') # path to dataset directory
-        save_dir = os.path.join(args.save_dir, dataset, args.save_name + '_benign') # path to save directory
+        save_dir = os.path.join(args.save_dir, dataset, args.save_name) # path to save directory
         log_dir = os.path.join(save_dir, 'logs') # path to logs directory
         os.makedirs(save_dir, exist_ok=True) # create save directory if it does not exist
         writer = SummaryWriter(log_dir=log_dir) # create a SummaryWriter for logging

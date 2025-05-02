@@ -45,7 +45,7 @@ def main():
 
     if dataset == 'maldeb':
         dataset_dir = os.path.join(args.dataset_dir, 'maldeb')
-        ae_ckpt = os.path.join(args.ckpt_dir, dataset, f'{args.ckpt_name}_benign/model_best.pth.tar')
+        ae_ckpt = os.path.join(args.ckpt_dir, dataset, f'{args.ckpt_name}/model_best.pth.tar')
         ae = models.GradConCAE(in_channel=in_channel)
         ae = torch.nn.DataParallel(ae).to(device)
         ae.eval()
