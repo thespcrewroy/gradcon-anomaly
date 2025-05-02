@@ -27,7 +27,7 @@
 
 - **Lightweight**: low parameter count (e.g., ~230K parameters) makes it efficient for deployment in resource-constrained environments
 - **Plug-and-Play Architecture**: a simple autoencoder that can be used with various datasets without major architectural change
-- **Instantaneous**: The small architecture supports quick inference, making it viable for real-time or near-real-time anomaly detection.
+- **Instantaneous**: the small architecture supports quick inference, making it viable for real-time or near-real-time anomaly detection.
 
 <details>
 <summary>📖 Table of Contents</summary>
