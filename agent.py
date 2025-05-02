@@ -1,8 +1,9 @@
-import torch
-from crewai import Agent, Task, Crew
-from PIL import Image
-import torchvision.transforms as transforms
-import os
+'''Import necessary libraries and modules for the CrewAI agent.'''
+import torch  # Import PyTorch for deep learning
+from crewai import Agent, Task, Crew # Import CrewAI classes for agent and task management
+from PIL import Image # Import PIL for image processing
+import torchvision.transforms as transforms # Import torchvision for image transformations
+import os # Import os for file path operations
 
 from models import GradConCAE  # Correctly import your model
 
@@ -15,33 +16,33 @@ in_channel = 1  # 'maldeb' is grayscale
 input_size = (252, 252)  # Match training input
 
 # Load model
-model = GradConCAE(in_channel=in_channel)
-model = torch.nn.DataParallel(model).to(device)
+model = GradConCAE(in_channel=in_channel) # Initialize the model
+model = torch.nn.DataParallel(model).to(device) # Use DataParallel for multi-GPU support if available
 
 # Load checkpoint
-checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
-model.load_state_dict(checkpoint['state_dict'])
+checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False) # Load the checkpoint
+model.load_state_dict(checkpoint['state_dict']) # Load the model state dict
 ref_grad = checkpoint.get('ref_grad', None)  # Only needed if you want GradCon scoring
-model.eval()
+model.eval() # Set model to evaluation mode
 
 # ----------- Image transform ----------
 transform = transforms.Compose([
     transforms.Resize(input_size),
     transforms.ToTensor(),
-])
+]) # Define the image transformation pipeline
 
 # ----------- Image prediction function ----------
-def predict_image(image_path):
+def predict_image(image_path): # Function to predict if an image is malicious or benign
     image = Image.open(image_path).convert("L")  # "L" for grayscale
-    image = transform(image).unsqueeze(0).to(device)
+    image = transform(image).unsqueeze(0).to(device) # Apply transformations and add batch dimension
 
-    with torch.no_grad():
-        output = model(image)
-        recon_error = ((output - image) ** 2).view(output.size(0), -1).mean(dim=1).item()
+    with torch.no_grad(): # Disable gradient calculation for inference
+        output = model(image) # Forward pass through the model
+        recon_error = ((output - image) ** 2).view(output.size(0), -1).mean(dim=1).item() # Calculate reconstruction error
 
     # Using a placeholder threshold; ideally you'd determine this via validation
-    threshold = 0.25 
-    return "Benign" if recon_error < threshold else "Malicious"
+    threshold = 0.25 # Set a threshold for classification
+    return "Benign" if recon_error < threshold else "Malicious" # Classify based on reconstruction error
 
 # ----------- Define a CrewAI Task ----------
 task = Task(

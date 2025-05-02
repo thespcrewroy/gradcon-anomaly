@@ -47,43 +47,43 @@ def main():
         trainset = datasets.FashionMNIST(dataset_dir, download=True, train=True) # Load the Fashion-MNIST training set
         testset = datasets.FashionMNIST(dataset_dir, download=True, train=False) # Load the Fashion-MNIST test set
 
-    elif args.dataset == 'maldeb':
-        raw_root = os.path.join(args.save_dir, 'Maldeb')
-        out_root = os.path.join(args.save_dir, 'maldeb')
+    elif args.dataset == 'maldeb': # If the dataset is 'maldeb'
+        raw_root = os.path.join(args.save_dir, 'Maldeb') # Directory where the raw Maldeb dataset is stored
+        out_root = os.path.join(args.save_dir, 'maldeb') # Directory to save the processed Maldeb dataset
 
-        train_ratio = 0.7
-        val_ratio = 0.15
-        test_ratio = 0.15
+        train_ratio = 0.7 # Ratio of training data
+        val_ratio = 0.15 # Ratio of validation data
+        test_ratio = 0.15 # Ratio of test data
 
-        for split in ['train', 'val', 'test']:
-            os.makedirs(os.path.join(out_root, split, 'Benign'), exist_ok=True)
-            if split != 'train':
-                os.makedirs(os.path.join(out_root, split, 'Malicious'), exist_ok=True)
+        for split in ['train', 'val', 'test']: # For each split (train, val, test)
+            os.makedirs(os.path.join(out_root, split, 'Benign'), exist_ok=True) # Create directories for benign data
+            if split != 'train': # If the split is not 'train'
+                os.makedirs(os.path.join(out_root, split, 'Malicious'), exist_ok=True) # Create directories for malicious data
 
-        for cls in ['Benign', 'Malicious']:
-            full_cls_dir = os.path.join(raw_root, cls)
-            files = sorted([f for f in os.listdir(full_cls_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
-            random.shuffle(files)
-            n = len(files)
+        for cls in ['Benign', 'Malicious']: # For each class (Benign, Malicious)
+            full_cls_dir = os.path.join(raw_root, cls) # Directory where the raw class data is stored
+            files = sorted([f for f in os.listdir(full_cls_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]) # List of files in the class directory
+            random.shuffle(files) # Shuffle the files
+            n = len(files) # Number of files in the class directory
 
             cap = args.benign_cap if cls == 'Benign' and args.benign_cap else args.malicious_cap if cls == 'Malicious' and args.malicious_cap else n
-            files = files[:min(cap, n)]
+            files = files[:min(cap, n)] # Limit the number of files to the specified cap
 
-            train_files = files[:int(len(files) * train_ratio)]
-            val_files = files[int(len(files) * train_ratio):int(len(files) * (train_ratio + val_ratio))]
-            test_files = files[int(len(files) * (train_ratio + val_ratio)) :]
+            train_files = files[:int(len(files) * train_ratio)] # Training files
+            val_files = files[int(len(files) * train_ratio):int(len(files) * (train_ratio + val_ratio))] # Validation files
+            test_files = files[int(len(files) * (train_ratio + val_ratio)) :] # Test files
 
-            if cls == 'Benign':
-                for f in train_files:
-                    shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'train', cls, f))
+            if cls == 'Benign': # If the class is 'Benign'
+                for f in train_files: # For each training file
+                    shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'train', cls, f)) # Copy the file to the training directory
 
-            for f in val_files:
-                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'val', cls, f))
-            for f in test_files:
-                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'test', cls, f))
+            for f in val_files: # For each validation file
+                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'val', cls, f)) # Copy the file to the validation directory
+            for f in test_files: # For each test file
+                shutil.copy(os.path.join(full_cls_dir, f), os.path.join(out_root, 'test', cls, f)) # Copy the file to the test directory
 
-        print("Maldeb dataset has been split into train/val/test under:", out_root)
-        return
+        print("Maldeb dataset has been split into train/val/test under:", out_root) # Print success message
+        return # End of the function
     
     np_train = [] # List to store training data
     np_test = [] # List to store test data
