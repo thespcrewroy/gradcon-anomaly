@@ -50,6 +50,7 @@
 ### Set up the environment
 Clone this repository and run following commands to create a conda environment and install all dependencies.
 ```
+pip install crewai (requires Python >= 3.10 and < 3.13)
 conda create -n gradcon python=3.6
 conda activate gradcon
 cd gradcon-anomaly
