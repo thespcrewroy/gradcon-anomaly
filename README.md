@@ -91,11 +91,13 @@ Works with: CIFAR-10; FMNIST; MNIST; CURE_TSR; Maldeb
 
 CURE-TSR:
 * To download CURE-TSR dataset, please visit [this repository](https://github.com/olivesgatech/CURE-TSR).
-* Place the downloaded dataset within the 'datasets' directory
+* Place the downloaded zip archive within the 'datasets' directory
 
 Maldeb:
 * To download Maldeb dataset, please visit [this kaggle repository](https://www.kaggle.com/datasets/saquib7hussain/maldeb-dataset) <br>
 * Place the downloaded dataset within the 'datasets' directory
+* Unzip the archive
+* Rename the parent folder to 'Maldeb'
 * Make sure it has the following file structure folderwise:
 ```
 Maldeb
